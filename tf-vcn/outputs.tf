@@ -16,3 +16,14 @@ output "id-for-for-route-table-that-includes-the-nat-gateway" {
   description = "OCID of the nat-route table - This route table has a nat gateway to be used for private subnets. This route table also has a service gateway."
   value = module.vcn.nat_route_id
 }
+
+
+
+# Outputs for private security list
+
+output "private-security-list-name" {
+  value = oci_core_security_list.private-security-list.display_name
+}
+output "private-security-list-OCID" {
+  value = oci_core_security_list.private-security-list.id
+}

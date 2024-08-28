@@ -8,7 +8,7 @@ module "vcn"{
   # insert the 5 required variables here
 
   # Required Inputs
-  compartment_id = resource.oci_identity_compartment.tf-compartment.id
+  compartment_id = "ocid1.tenancy.oc1..aaaaaaaazuk73qykn6pwt6duims3z3hlml3wfwhwq7cud63ihhbdvc3ojd4a"
   region = "us-ashburn-1"
 
   internet_gateway_route_rules = null
