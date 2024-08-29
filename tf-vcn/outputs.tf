@@ -47,3 +47,13 @@ output "private-subnet-name" {
 output "private-subnet-OCID" {
   value = oci_core_subnet.vcn-private-subnet.id
 }
+
+
+# Outputs for public subnet
+
+output "public-subnet-name" {
+  value = oci_core_subnet.vcn-public-subnet.display_name
+}
+output "public-subnet-OCID" {
+  value = oci_core_subnet.vcn-public-subnet.id
+}
