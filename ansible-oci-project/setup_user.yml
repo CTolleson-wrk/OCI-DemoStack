@@ -1,0 +1,38 @@
+---
+- name: Setup user and group
+  hosts: all
+  become: yes
+  vars:
+    group_name: demostack
+    user_name: bclavel
+    ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNkDLbJdHqjIZewgNXmi37O4RDGCRAlCRwK6S69bT8mG1eQ8npxwwGluaN9uOmyxEqudQurdOIPODGp6QfcaXqHazCrwyYkZ6oj0I3/3ALOZfCFg9UU7o0/4FrXra8q4uBAOW6pjYdkhYODNqnQiSC78AZLms+ujbOSMfaAe7STUT0CAX6Okg05pvK3bje4ZMGxJw3AnjpmOQRRIP5OaQQ90q1AG90Ea/ILjOpIonQa0DFsfMBE+fmZHLX1zCLcniApOevjUqlyRHJpjhXhhbxVmQ6DWO8iAHxw/O6kZPAsLxbmurx9xs5taShftugCHHZA+C/SoL1RA38/4xTqGHGPsg7SJlrpRXzsFMMILQShLBRH6SgvZuE7ry/oXMxJn1dKGSTZEc1YdJ9ziJ5Vlp40NXD72rX/TqDBpxg4pexdBWzuMTXNzS/Ay1nC4OZutEhy0vK8hQtBEPifSiAt30WDst6IGQ+7vLtjYPjtwoeWAobC7fd8b12IETdFH2dZOE= brodyclavel@AC02VM03SJ931.local"
+
+  tasks:
+    - name: Check Python version
+      debug:
+        msg: "Python version: {{ ansible_python_version }}"
+
+    - name: Create group
+      group:
+        name: "{{ group_name }}"
+        state: present
+
+    - name: Create user
+      user:
+        name: "{{ user_name }}"
+        group: "{{ group_name }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Add SSH public key to user
+      authorized_key:
+        user: "{{ user_name }}"
+        key: "{{ ssh_public_key }}"
+
+    - name: Allow user to sudo without password
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^{{ user_name }}'
+        line: '{{ user_name }} ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
